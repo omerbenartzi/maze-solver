@@ -100,13 +100,12 @@ def create_union(maze):
                     union.union(pixel_to_id(maze, i, j), pixel_to_id(maze, i + 1, j))
     return union
 
-def create_graph(maze, union):
+def create_graph(maze, union, group):
     g = Graph()
 
-    
     for i, row in enumerate(maze):
         for j, cell in enumerate(row):
-            if union.find(pixel_to_id(maze, i, j)) == union.find(pixel_to_id(maze, end_i, end_j)):
+            if union.find(pixel_to_id(maze, i, j)) == union.find(group):
                 g.add_vertice(Node(i, j))
 
     for v in g.vertices:
@@ -143,7 +142,7 @@ def solve(maze):
         return maze
     
 
-    g = create_graph(maze, union)
+    g = create_graph(maze, union, pixel_to_id(maze, end_i, end_j))
     g.bfs(Node(start_i, start_j))
 
     # Draw path
