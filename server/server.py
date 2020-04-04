@@ -41,12 +41,18 @@ class UnionFind:
 
         self.numOfSets -= 1
 
+
 class Node:
-    def __init__(self, i, j):
-        self.i = i
-        self.j = j
+    def __init__(self):
         self.label = 0
 
+class MazeNode(Node):
+    def __init__(self, i, j):
+        super().__init__()
+        self.i = i
+        self.j = j
+
+    
     def __str__(self):
         return str(self.i ) + " " + str(self.j)
 
@@ -60,15 +66,8 @@ class Graph:
     def add_edge(self, v, u):
         self.vertices[v].append(u)
 
-    def get_vertice(self, i, j):
-        for v in self.vertices:
-            if v.i == i and v.j == j:
-                return v
-
-        return None
-
     def bfs(self, node):
-        s = self.get_vertice(node.i, node.j)
+        s = node
         visited = {}
         queue = []
 
@@ -84,6 +83,24 @@ class Graph:
                     queue.append(v)
                     v.label = s.label + 1
             v_c[s] = []
+
+class MazeGraph(Graph):
+
+    def __init__(self, start=None, end=None):
+        super().__init__()
+        self.start = start
+        self.end = end
+
+    def get_vertice(self, i, j):
+        for v in self.vertices:
+            if v.i == i and v.j == j:
+                return v
+
+        return None
+        
+    def bfs(self, node):
+        s = self.get_vertice(node.i, node.j)
+        super().bfs(s)
 
 
 def create_union(maze):
@@ -101,12 +118,12 @@ def create_union(maze):
     return union
 
 def create_graph(maze, union, group):
-    g = Graph()
+    g = MazeGraph()
 
     for i, row in enumerate(maze):
         for j, cell in enumerate(row):
             if union.find(pixel_to_id(maze, i, j)) == union.find(group):
-                g.add_vertice(Node(i, j))
+                g.add_vertice(MazeNode(i, j))
 
     for v in g.vertices:
         for u in g.vertices:
@@ -143,7 +160,6 @@ def solve(maze):
     
 
     g = create_graph(maze, union, pixel_to_id(maze, end_i, end_j))
-    g.bfs(Node(start_i, start_j))
 
     # Draw path
     v = g.get_vertice(end_i, end_j)
