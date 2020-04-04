@@ -5,7 +5,6 @@ import Grid from '@material-ui/core/Grid';
 const Maze = (props) => {
 
     const mazeMatrix = props.mazeMatrix;
-
     const setMazeMatrix = props.setMazeMatrix;
     const [mouseIsDown, setMouseIsDown] = useState(false);
     const redPoint = props.redPoint;

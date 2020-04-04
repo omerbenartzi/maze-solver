@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Maze from './Maze';
-import { Button, TextField, Grid } from '@material-ui/core';
+import { Button, TextField, Grid, Typography } from '@material-ui/core';
+import Tile from './Tile';
 
 function App() {
   const [state, setState] = useState(2);
@@ -63,13 +64,25 @@ function App() {
           .then(response => response.json())
           .then(data => {setMazeMatrix(data); setSolved(true)});
   }
+  const canvasStyle = {
+      display: "flex",
+      flexDirection: "col",
+      marginTop: 40
+  }
 
   return (
-    <div className="App">
+    
+    <div className="App" >
+      <Typography variant="h2">
+        Maze Solver
+      </Typography>
+      <div style={canvasStyle}>
+        <Button disabled={state===2 || solved} onClick={()=>setState(2)} variant="contained" color="primary">Wall</Button>
+        <Button disabled = {state === 1 || solved} onClick={()=>setState(1)} variant="contained" color="secondary">Start/End</Button>
+        <Button disabled={state===0 || solved} onClick={()=>setState(0)} variant="contained" color="default">Delete</Button>
+        <Tile state={state} width={32} height={32}></Tile>
+      </div>
       
-      <Button onClick={()=>setState(2)} variant="contained" color="primary">Wall</Button>
-      <Button onClick={()=>setState(1)} variant="contained" color="secondary">Start/End</Button>
-      <Button onClick={()=>setState(0)} variant="contained" color="default">Delete</Button>
       <br />
       
  
@@ -84,7 +97,7 @@ function App() {
       </Grid>      
       <br />
 
-      <Button disabled={solved} onClick={solve} variant="contained" color="primary" >Solve</Button>
+      <Button disabled={solved || redPoint !== 2} onClick={solve} variant="contained" color="primary" >Solve</Button>
       <Button disabled={!solved} onClick={clearSolution} variant="contained" color="primary" >Claer</Button>
       <Button onClick={reset} variant="contained" color="primary">Reset Maze</Button>
       <Maze state={state} mazeMatrix={mazeMatrix} redPoint={redPoint} setRedPoint={setRedPoint} setMazeMatrix={setMazeMatrix}></Maze>
