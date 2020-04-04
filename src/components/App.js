@@ -8,7 +8,6 @@ function App() {
   const [width, setWidth] = useState(8);
   const [height, setHeight] = useState(8);
   const [mazeMatrix, setMazeMatrix] = useState(Array.from(Array(height), () => Array(width).fill(0)));
-  console.log(mazeMatrix)
   const [redPoint, setRedPoint] = useState(0);
  
   const [solved, setSolved] = useState(false);
