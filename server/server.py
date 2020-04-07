@@ -161,6 +161,8 @@ def solve(maze):
 
     g = create_graph(maze, union, pixel_to_id(maze, end_i, end_j))
 
+    g.bfs(MazeNode(start_i, start_j))
+    
     # Draw path
     v = g.get_vertice(end_i, end_j)
     visited = {}
